@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Games Page</title>
+</head>
+<body>
+    <p><a href="index.html">Link to Games Page</a></p>
+    <p><a href="addgame.html">Link to Add Game</a></p>
+
+    <h1>Games</h1>
+
+    <div id="gameTable"></div>
+    <br>
+    <button onclick="document.location='addgame.html'">New Game</button>
+
+    <script>
+        window.onload = function()
+        {
+            var games = document.getElementById("gameTable");
+            games.innerHTML = "";
+
+            var table = "<table>";
+            
+            fetch("https://lime-faithful-hippo.cyclic.app/api/games")
+            .then(function(response)
+            {
+                return response.json();
+            })
+            .then(function(data)
+            {
+                console.log(data);
+                table += `</tr>`;
+                table += `<th>${"Game Name"}<th>`;
+                table += `<th>${"Platform"}<th>`;
+                table += `</tr>`;
+                data.forEach(element =>
+                {
+                    table += `<tr>`;
+                    table += `<td><a href="fetchleaderboard.html?id=${element.id}">${element.GameName}</a><td>`;
+                    table += `<td>${element.Platform}<td>`;
+                    table += `</tr>`;
+                });
+            })
+            .then(function()
+            {
+                games.innerHTML += table;
+            })
+            }
+        </script>      
+</body>
+</html>
+
+
+<!--Read Games page and Read Leaderboard page are esentially the same (x2).
+Add Game and Add Scores are also similar (x2).
+The actions performed in both cases can also be reaplied for the most part.
+
+* Add Leaderboard page may require a hidden field that stores the id.-->
+
+<!--function goFetch(){
+            var quoteTag = document.getElementById('quote');
+            quoteTag.innerHTML = "";
+
+            var tableTag = "<table>";
+            var index = 0;
+
+            fetch("https://type.fit/api/quotes")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+                data.forEach(element => {
+                    tableTag += `<tr>`;
+                    tableTag += `<td hidden>${index}</td>`;
+                    tableTag += `<td>${element.author}</td>`;
+                    tableTag += `<td><a href="quote.html?index=${index}">${element.text}</a></td>`   // make the author a link
+                    tableTag += `</tr>`;
+                    index++;
+                    //quoteTag.innerHTML += element.text += "<br><br>";
+                });
+                //quoteTag.innerHTML = data[0].text;
+            })
+            .then(function(){
+                tableTag += `</table>`;
+                quoteTag.innerHTML += tableTag;
+            });
+        }
+})-->
+
+<!--do not use <table> to build a table. Use an empty div tag with an id + a button.
+            <div id="table">
+            </div>
+        <button>
+            
+        Use <script> code from resources (Teams).
+            
+        *in <script> we need something to invoke the function call
+
+            window.onload = function(){
+                // fetch API           
+            }-->

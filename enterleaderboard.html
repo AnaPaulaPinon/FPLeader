@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Add Score</title>
+</head>
+<body>
+    <p><a href="index.html">Link to Games Page</a></p>
+    <p><a href="addgame.html">Link to Add Game</a></p>
+
+    <h1>Add Score</h1>
+    <div>
+        <form class="addScore">
+            <input type="text" name="id" id="id" hidden>
+
+            <label for="player">Player:</label>
+            <input type="text" id="player" name="player" required><br>
+
+            <label for="score">Score:</label>
+            <input type="text" id="score" name="score" required><br>
+
+            <label for="time">Time:</label>
+            <input type="text" id="time" name="time" placeholder="00:00:00:00" required><br>
+        </form>
+        
+        <br>
+        <button onclick="sendData()">Submit</button>
+    </div>
+
+    <script>
+    function sendData()
+    {
+        
+        let search = window.location.search;
+        let actualQuerys = new URLSearchParams(search);
+
+        var gameIdObj = actualQuerys.get(`id`);
+        var playerObj = document.getElementById("player").value;
+        var scoreObj = document.getElementById("score").value;
+        var timeObj = document.getElementById("time").value;
+
+        var addScoreObj =
+        {
+            gameID : gameIdObj,
+            player : playerObj,
+            score : scoreObj,
+            time : timeObj
+        }
+
+    fetch(`https://lime-faithful-hippo.cyclic.app/api/leaderBoard/${gameIdObj}`,
+    {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(addScoreObj),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(function(response)
+        {
+            response.json()
+        })
+    .then(function(response)
+        {
+            console.log("Ok");
+            console.log(response);
+            window.location.href = "index.html";
+        })
+    .catch(function(error)
+        {
+            console.log("Error");
+            console.log(error);
+        })
+    }        
+    </script>
+    
+</body>
+</html>

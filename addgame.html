@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Add Game</title>
+</head>
+<body>
+    <p><a href="index.html">Link to Games Page</a></p>
+    <p><a href="addgame.html">Link to Add Game</a></p>
+
+    <h1>Add Game</h1>
+
+    <div>
+        <form class="addGame" action="https://lime-faithful-hippo.cyclic.app/api/games" method="post">
+            <input type="text" name="id" id="id" hidden>
+
+            <label for="gameName">Name:</label>
+            <input type="text" id="gameName" name="gameName" required><br>
+
+            <label for="platform">Platform:</label>
+            <input type="text" id="platform" name="platform" required ><br>
+        </form> 
+        
+        <br>
+        <button onclick="sendData()">Submit</button>
+    </div>
+
+    <script>
+    function sendData()
+    {
+        var gameObj = document.getElementById("gameName").value;
+        var platformObj = document.getElementById("platform").value;
+
+        var addGameObj =
+        {
+            name : gameObj,
+            platform : platformObj
+        }
+
+    fetch("https://lime-faithful-hippo.cyclic.app/api/games",
+    {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(addGameObj),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(function(response)
+        {
+            response.json()
+        })
+    .then(function(response)
+        {
+            console.log("Ok");
+            console.log(response);
+            window.location.href = "index.html";
+        })
+    .catch(function(error)
+        {
+            console.log("Error");
+            console.log(error);
+        })
+    }
+    
+    </script> 
+    
+</body>
+</html>
+
+<!--Use getElementById to get the field objects
+var gameObject= getElementById('game');
+var platformObject= getElementById('platform');
+
+* game is the first field inside the form. Platform is the second field
+
+Store them inside an object:
+var myObj= {game: game
+            platform: plat};
+        
+        JSON.stringify(myObj);
+        *This will turn the obj into a JSON
+        *Pass this into the fetch call-->
+
+
+        <!--   .then(function(response)
+        {
+            response.json()
+        })
+        .then(function(response)
+        {
+            console.log("OK");
+        })
+
+    
+        .catch(function(error)
+        {
+            console.log("Error");
+            console.log(error);
+        })-->

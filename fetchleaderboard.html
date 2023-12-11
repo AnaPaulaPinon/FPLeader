@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Leaderboard</title>
+</head>
+<body>
+    <p><a href="index.html">Link to Games Page</a></p>
+    <p><a href="addgame.html">Link to Add Game</a></p>
+
+    <div id="leaderboardTable"></div>
+    <br>
+    <button onclick="addLeaderboard()">New Entry</button>
+
+    <script>
+        window.onload = function()
+        {
+            let search = window.location.search;
+            let actualQuerys = new URLSearchParams(search);
+
+            var leaderBoard = document.getElementById("leaderboardTable");
+            leaderBoard.innerHTML = "";
+
+            var table = "<table>";
+
+            fetch (`https://lime-faithful-hippo.cyclic.app/api/leaderBoard/${actualQuerys.get(`id`)}`)
+            .then(function(response)
+            {
+                return response.json();
+            })
+            .then(function(data) 
+            {
+                console.log(data.Leaderboard);
+                data = data.Leaderboard;
+                table += `</tr>`;
+                table += `<th>${"Player"}<th>`;
+                table += `<th>${"Score"}<th>`;
+                table += `<th>${"Time"}<th>`;
+                table += `</tr>`;
+
+            for (let ii = 0; ii < data.length; ii++)
+                {
+                    table += `<tr>`;
+                    table += `<td>${data[ii].Player}<td>`;
+                    table += `<td>${data[ii].Score}<td>`;
+                    table += `<td>${data[ii].Time}<td>`;
+                }
+                    table += `</table>`;
+            })
+            .then(function()
+            {
+                table += `<table>`;
+                leaderBoard.innerHTML += table;
+            })
+            }
+
+        function addLeaderboard()
+        {
+            let search = window.location.search;
+            let actualQuerys = new URLSearchParams(search);
+            window.location.href = "enterleaderboard.html?id=" + actualQuerys.get(`id`);
+        }
+        
+    </script> 
+</body>
+</html>
